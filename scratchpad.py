@@ -4,8 +4,6 @@ import solana
 
 http_client = Client("https://explorer-api.mainnet-beta.solana.com")
 
-pubkey = PublicKey(1)
-
 # Seed values for list:
 # 1 - "metadata"
 # 2 - Public key/address of metaplex
