@@ -18,4 +18,6 @@ program_address, _ = PublicKey.find_program_address(seed, program_id)
 program_address_data = http_client.get_account_info(program_address)
 program_data = program_address_data["result"]["value"]["data"][0]
 
+# Then need to deserialize with borsh
+
 print(program_data)
