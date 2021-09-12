@@ -106,3 +106,4 @@ ENV/
 .mypy_cache/
 
 *.csv
+.DS_Store
