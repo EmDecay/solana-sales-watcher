@@ -23,5 +23,7 @@ program_address, _ = PublicKey.find_program_address(seed, program_id)
 program_address_data = sol_client.get_account_info(program_address)
 program_data = program_address_data["result"]["value"]["data"][0]
 metadata = deserialize_metadata(base58.b58encode(base64.b64decode(program_data)).decode("utf-8"))
+uri = json.loads(metadata)["uri"]
+pig_details = json.loads(requests.get(uri).text)
 
-print("Signature: " +sig + "\nStarting Balance: " + str(balance_before/1000000000) + "\nEnding Balance: " + str(balance_after/1000000000) + "\nMint: " + mint + "\nMetadata: " + metadata)
+print("Signature: " + sig + "\nStarting Balance: " + str(balance_before/1000000000) + "\nEnding Balance: " + str(balance_after/1000000000) + "\nMint: " + mint + "\nPig: " + pig_details["name"] + "\nImage: " + pig_details["image"])
