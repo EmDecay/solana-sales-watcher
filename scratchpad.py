@@ -1,6 +1,7 @@
 from solana.rpc.api import Client
 from solana.publickey import PublicKey
-import solana
+import solana, base64, base58
+from metaplex_decoder import *
 
 http_client = Client("https://explorer-api.mainnet-beta.solana.com")
 
@@ -18,4 +19,4 @@ program_data = program_address_data["result"]["value"]["data"][0]
 
 # Then need to deserialize with borsh
 
-print(program_data)
+print(deserialize_metadata(base58.b58encode(base64.b64decode(program_data)).decode("utf-8")))
