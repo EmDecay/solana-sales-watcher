@@ -26,4 +26,4 @@ metadata = deserialize_metadata(base58.b58encode(base64.b64decode(program_data))
 uri = json.loads(metadata)["uri"]
 pig_details = json.loads(requests.get(uri).text)
 
-print("Signature: " + sig + "\nStarting Balance: " + str(balance_before/1000000000) + "\nEnding Balance: " + str(balance_after/1000000000) + "\nCost: " + str((balance_after-balance_before)/1000000000) + "\nMint: " + mint + "\nPig: " + pig_details["name"] + "\nImage: " + pig_details["image"])
+print("Signature: " + sig + "\nStarting Balance: " + str(balance_before/1000000000) + " SOL\nEnding Balance: " + str(balance_after/1000000000) + " SOL\nCost: " + str(abs((balance_after-balance_before)/1000000000)) + " SOL\nMint: " + mint + "\nPig: " + pig_details["name"] + "\nImage: " + pig_details["image"])
