@@ -1,4 +1,5 @@
-# Base Mint Address - Pigv3gFWLWJL8QwrFBkdZLe1RYzNJTSJPGEUNVimJjh
+# Pig Mint Address - Pigv3gFWLWJL8QwrFBkdZLe1RYzNJTSJPGEUNVimJjh
+# TBT Mint Address - BVpxLszd8FLUd7N8trW2Ykq47PNHEojMpEu2qqy9KX1S
 # Mainnet Beta RPC Endpoint:  https://api.mainnet-beta.solana.com || https://explorer-api.mainnet-beta.solana.com
 
 import requests, json, base64, base58
@@ -9,7 +10,11 @@ from metaplex_decoder import *
 sol_client = Client("https://explorer-api.mainnet-beta.solana.com")
 program_id = PublicKey("metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt518x1s")
 
-request_sig = {"jsonrpc": "2.0", "id": 1, "method": "getConfirmedSignaturesForAddress2", "params": ["Pigv3gFWLWJL8QwrFBkdZLe1RYzNJTSJPGEUNVimJjh"]}
+# Pig
+# request_sig = {"jsonrpc": "2.0", "id": 1, "method": "getConfirmedSignaturesForAddress2", "params": ["Pigv3gFWLWJL8QwrFBkdZLe1RYzNJTSJPGEUNVimJjh"]}
+
+# TBT
+request_sig = {"jsonrpc": "2.0", "id": 1, "method": "getConfirmedSignaturesForAddress2", "params": ["BVpxLszd8FLUd7N8trW2Ykq47PNHEojMpEu2qqy9KX1S"]}
 response_sig = requests.post("https://explorer-api.mainnet-beta.solana.com", json=request_sig)
 sig = json.loads(response_sig.text)["result"][0]["signature"]
 
@@ -31,6 +36,6 @@ print("Signature: " + sig \
     + "\nStarting Balance: " + str(balance_before/1000000000) \
     + " SOL\nEnding Balance: " + str(balance_after/1000000000) \
     + " SOL\nCost: " + str(balance_difference/1000000000) \
-    + " SOL\nMint: " + mint + "\nPig: " \
-    + nft_details["name"] + "\nImage: " \
-    + nft_details["image"])
+    + " SOL\nMint: " + mint \
+    + "\nNFT: " + nft_details["name"] \
+    + "\nImage: " + nft_details["image"])
