@@ -17,6 +17,7 @@ request_price = {"jsonrpc": "2.0", "id": 1, "method": "getConfirmedTransaction",
 response_price = json.loads(requests.post("https://explorer-api.mainnet-beta.solana.com", json=request_price).text)["result"]["meta"]
 balance_before = response_price["preBalances"][0]
 balance_after = response_price["postBalances"][0]
+balance_difference = abs((balance_after-balance_before))
 mint = response_price["postTokenBalances"][0]["mint"]
 seed = [bytes("metadata".encode()) , bytes(program_id), bytes(PublicKey(mint))]
 program_address, _ = PublicKey.find_program_address(seed, program_id)
@@ -24,6 +25,12 @@ program_address_data = sol_client.get_account_info(program_address)
 program_data = program_address_data["result"]["value"]["data"][0]
 metadata = deserialize_metadata(base58.b58encode(base64.b64decode(program_data)).decode("utf-8"))
 uri = json.loads(metadata)["uri"]
-pig_details = json.loads(requests.get(uri).text)
+nft_details = json.loads(requests.get(uri).text)
 
-print("Signature: " + sig + "\nStarting Balance: " + str(balance_before/1000000000) + " SOL\nEnding Balance: " + str(balance_after/1000000000) + " SOL\nCost: " + str(abs((balance_after-balance_before)/1000000000)) + " SOL\nMint: " + mint + "\nPig: " + pig_details["name"] + "\nImage: " + pig_details["image"])
+print("Signature: " + sig \
+    + "\nStarting Balance: " + str(balance_before/1000000000) \
+    + " SOL\nEnding Balance: " + str(balance_after/1000000000) \
+    + " SOL\nCost: " + str(balance_difference/1000000000) \
+    + " SOL\nMint: " + mint + "\nPig: " \
+    + nft_details["name"] + "\nImage: " \
+    + nft_details["image"])
