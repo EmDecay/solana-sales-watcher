@@ -107,3 +107,4 @@ ENV/
 
 *.csv
 .DS_Store
+*.db

@@ -12,6 +12,6 @@ def dbinit():
         # Initialize database
         dbconn = sqlite3.connect(db)
         dbc = dbconn.cursor()
-        dbc.execute("CREATE TABLE transaction (name TEXT, collection TEXT, description TEXT, image_url TEXT, cost REAL, txid TEXT, id INTEGER PRIMARY KEY AUTOINCREMENT)")
+        dbc.execute("CREATE TABLE tx(name TEXT, collection TEXT, description TEXT, imageurl TEXT, cost FLOAT, txid TEXT)")
         dbconn.commit()
         dbconn.close()

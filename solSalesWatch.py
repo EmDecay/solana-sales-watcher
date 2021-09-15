@@ -6,6 +6,7 @@ import requests, json, base64, base58
 from solana.publickey import PublicKey
 from solana.rpc.api import Client
 from metaplex_decoder import *
+from solsalesdb import *
 
 sol_client = Client("https://explorer-api.mainnet-beta.solana.com")
 program_id = PublicKey("metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt518x1s")
@@ -39,3 +40,5 @@ print("Signature: " + sig \
     + " SOL\nMint: " + mint \
     + "\nNFT: " + nft_details["name"] \
     + "\nImage: " + nft_details["image"])
+
+dbinit()
