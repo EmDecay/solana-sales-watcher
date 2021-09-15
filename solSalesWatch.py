@@ -35,7 +35,7 @@ nft_details = json.loads(requests.get(uri).text)
 print (nft_details)
 
 nft_name = nft_details["name"]
-nft_image = nft_details["image"]
+nft_imageurl = nft_details["image"]
 nft_exturl = nft_details["external_url"]
 nft_description = nft_details["description"]
 nft_cost = balance_difference/1000000000
@@ -50,4 +50,4 @@ print("Signature: " + sig \
     + "\nImage: " + nft_details["image"])
 
 dbinit()
-addtx("x", "x", "x", "x", "x", "x")
+addtx(nft_tx, nft_name, nft_exturl, nft_description, nft_imageurl, nft_cost)

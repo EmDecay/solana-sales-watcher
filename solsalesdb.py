@@ -16,12 +16,12 @@ def dbinit():
         dbconn.commit()
         dbconn.close()
 
-def addtx(txid, name, exturl, description, imageurl, cost):
+def addtx(txid, name, exturl, description, imgurl, cost):
     # INSERT INTO tx VALUES("txid", "name", "http://ext.url", "description", "http://image.url", 3.14159, NULL)
     dbconn = sqlite3.connect(db)
     dbc = dbconn.cursor()
-    dbc.execute("INSERT INTO tx(name, exturl, description, imageurl, cost, txid) \
-        VALUES ('txid_test', 'name_text', 'url_text', 'desc_text', 'imgurl_text', 3.14159)")
+    dbc.execute("INSERT INTO tx(txid, name, exturl, description, imageurl, cost) \
+        VALUES ('" + txid + "', '" + name + "', '" + exturl + "', '" + description + "', '" + imgurl + "', " + str(cost) + ")")
     dbconn.commit()
     dbconn.close()
     return
