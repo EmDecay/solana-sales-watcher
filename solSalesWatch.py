@@ -50,3 +50,4 @@ print("Signature: " + sig \
     + "\nImage: " + nft_details["image"])
 
 dbinit()
+addtx("x", "x", "x", "x", "x", "x")
