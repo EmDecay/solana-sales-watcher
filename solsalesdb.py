@@ -12,6 +12,10 @@ def dbinit():
         # Initialize database
         dbconn = sqlite3.connect(db)
         dbc = dbconn.cursor()
-        dbc.execute("CREATE TABLE tx(name TEXT, collection TEXT, description TEXT, imageurl TEXT, cost FLOAT, txid TEXT)")
+        dbc.execute("CREATE TABLE tx(name TEXT, exturl TEXT, description TEXT, imageurl TEXT, cost FLOAT, txid TEXT, uid INTEGER PRIMARY KEY AUTOINCREMENT)")
         dbconn.commit()
         dbconn.close()
+
+def addtx(txid, name, exturl, description, imageurl, cost):
+    # INSERT INTO scan VALUES("txid", "name", "http://ext.url", "description", "http://image.url", 3.14159, NULL)
+    return

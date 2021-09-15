@@ -32,6 +32,14 @@ program_data = program_address_data["result"]["value"]["data"][0]
 metadata = deserialize_metadata(base58.b58encode(base64.b64decode(program_data)).decode("utf-8"))
 uri = json.loads(metadata)["uri"]
 nft_details = json.loads(requests.get(uri).text)
+print (nft_details)
+
+nft_name = nft_details["name"]
+nft_image = nft_details["image"]
+nft_exturl = nft_details["external_url"]
+nft_description = nft_details["description"]
+nft_cost = balance_difference/1000000000
+nft_tx = sig
 
 print("Signature: " + sig \
     + "\nStarting Balance: " + str(balance_before/1000000000) \
