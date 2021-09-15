@@ -8,7 +8,7 @@ db = "solsaleswatch.db"
 # If database doesn't yet exist, initialize it with the table structure
 def dbinit():
     if not os.path.isfile(db):
-        print "No database found; initializing \'" + db + "\'..."
+        print ("No database found; initializing \'" + db + "\'...")
         # Initialize database
         dbconn = sqlite3.connect(db)
         dbc = dbconn.cursor()
