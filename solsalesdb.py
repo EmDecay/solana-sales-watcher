@@ -12,16 +12,16 @@ def dbinit():
         # Initialize database
         dbconn = sqlite3.connect(db)
         dbc = dbconn.cursor()
-        dbc.execute("CREATE TABLE tx(name TEXT, exturl TEXT, description TEXT, imageurl TEXT, cost FLOAT, txid TEXT, uid INTEGER PRIMARY KEY AUTOINCREMENT)")
+        dbc.execute("CREATE TABLE tx(name TEXT, exturl TEXT, collection TEXT, description TEXT, imageurl TEXT, cost FLOAT, txid TEXT, uid INTEGER PRIMARY KEY AUTOINCREMENT)")
         dbconn.commit()
         dbconn.close()
 
-def addtx(txid, name, exturl, description, imgurl, cost):
+def addtx(txid, name, exturl, collection, description, imgurl, cost):
     # INSERT INTO tx VALUES("txid", "name", "http://ext.url", "description", "http://image.url", 3.14159, NULL)
     dbconn = sqlite3.connect(db)
     dbc = dbconn.cursor()
-    dbc.execute("INSERT INTO tx(txid, name, exturl, description, imageurl, cost) \
-        VALUES ('" + txid + "', '" + name + "', '" + exturl + "', '" + description + "', '" + imgurl + "', " + str(cost) + ")")
+    dbc.execute("INSERT INTO tx(txid, name, exturl, collection, description, imageurl, cost) \
+        VALUES ('" + txid + "', '" + name + "', '" + exturl + "', '" + collection + "', '" + description + "', '" + imgurl + "', " + str(cost) + ")")
     dbconn.commit()
     dbconn.close()
     return

@@ -15,7 +15,7 @@ program_id = PublicKey("metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt518x1s")
 # request_sig = {"jsonrpc": "2.0", "id": 1, "method": "getConfirmedSignaturesForAddress2", "params": ["Pigv3gFWLWJL8QwrFBkdZLe1RYzNJTSJPGEUNVimJjh"]}
 
 # TBT
-request_sig = {"jsonrpc": "2.0", "id": 1, "method": "getConfirmedSignaturesForAddress2", "params": ["BVpxLszd8FLUd7N8trW2Ykq47PNHEojMpEu2qqy9KX1S"]}
+request_sig = {"jsonrpc": "2.0", "id": 1, "method": "getConfirmedSignaturesForAddress2", "params": ["Pigv3gFWLWJL8QwrFBkdZLe1RYzNJTSJPGEUNVimJjh"]}
 response_sig = requests.post("https://explorer-api.mainnet-beta.solana.com", json=request_sig)
 sig = json.loads(response_sig.text)["result"][0]["signature"]
 
@@ -32,8 +32,8 @@ program_data = program_address_data["result"]["value"]["data"][0]
 metadata = deserialize_metadata(base58.b58encode(base64.b64decode(program_data)).decode("utf-8"))
 uri = json.loads(metadata)["uri"]
 nft_details = json.loads(requests.get(uri).text)
-print (nft_details)
 
+nft_collection = json.loads(metadata)["symbol"]
 nft_name = nft_details["name"]
 nft_imageurl = nft_details["image"]
 nft_exturl = nft_details["external_url"]
@@ -42,6 +42,7 @@ nft_cost = balance_difference/1000000000
 nft_tx = sig
 
 print("Signature: " + sig \
+    + "\nCollection: " + nft_collection \
     + "\nStarting Balance: " + str(balance_before/1000000000) \
     + " SOL\nEnding Balance: " + str(balance_after/1000000000) \
     + " SOL\nCost: " + str(balance_difference/1000000000) \
@@ -50,4 +51,4 @@ print("Signature: " + sig \
     + "\nImage: " + nft_details["image"])
 
 dbinit()
-addtx(nft_tx, nft_name, nft_exturl, nft_description, nft_imageurl, nft_cost)
+addtx(nft_tx, nft_name, nft_exturl, nft_collection, nft_description, nft_imageurl, nft_cost)
