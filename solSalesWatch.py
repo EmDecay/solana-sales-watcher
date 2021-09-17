@@ -1,6 +1,9 @@
+# solsaleswatch.py - The brains behind the code
+# Author - Matt (emdecay (at) protonmail.com)
+
 # Pig Mint Address - Pigv3gFWLWJL8QwrFBkdZLe1RYzNJTSJPGEUNVimJjh
 # TBT Mint Address - BVpxLszd8FLUd7N8trW2Ykq47PNHEojMpEu2qqy9KX1S
-# Mainnet Beta RPC Endpoint:  https://api.mainnet-beta.solana.com || https://explorer-api.mainnet-beta.solana.com
+# Mainnet Beta RPC Endpoints:  https://api.mainnet-beta.solana.com || https://explorer-api.mainnet-beta.solana.com
 
 import requests, json, base64, base58
 from solana.publickey import PublicKey
@@ -12,10 +15,11 @@ sol_client = Client("https://explorer-api.mainnet-beta.solana.com")
 program_id = PublicKey("metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt518x1s")
 
 # Pig
-# request_sig = {"jsonrpc": "2.0", "id": 1, "method": "getConfirmedSignaturesForAddress2", "params": ["Pigv3gFWLWJL8QwrFBkdZLe1RYzNJTSJPGEUNVimJjh"]}
+request_sig = {"jsonrpc": "2.0", "id": 1, "method": "getConfirmedSignaturesForAddress2", "params": ["Pigv3gFWLWJL8QwrFBkdZLe1RYzNJTSJPGEUNVimJjh"]}
 
 # TBT
-request_sig = {"jsonrpc": "2.0", "id": 1, "method": "getConfirmedSignaturesForAddress2", "params": ["Pigv3gFWLWJL8QwrFBkdZLe1RYzNJTSJPGEUNVimJjh"]}
+# request_sig = {"jsonrpc": "2.0", "id": 1, "method": "getConfirmedSignaturesForAddress2", "params": ["BVpxLszd8FLUd7N8trW2Ykq47PNHEojMpEu2qqy9KX1S"]}
+
 response_sig = requests.post("https://explorer-api.mainnet-beta.solana.com", json=request_sig)
 sig = json.loads(response_sig.text)["result"][0]["signature"]
 
