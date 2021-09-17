@@ -5,7 +5,7 @@
 # TBT Mint Address - BVpxLszd8FLUd7N8trW2Ykq47PNHEojMpEu2qqy9KX1S
 # Mainnet Beta RPC Endpoints:  https://api.mainnet-beta.solana.com || https://explorer-api.mainnet-beta.solana.com
 
-import requests, json, base64, base58, time
+import requests, json, base64, base58, yfinance
 from solana.publickey import PublicKey
 from solana.rpc.api import Client
 from metaplex_decoder import *
@@ -15,6 +15,8 @@ dbinit()
 
 sol_client = Client("https://explorer-api.mainnet-beta.solana.com")
 program_id = PublicKey("metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt518x1s")
+
+solusd = yfinance.Ticker("SOL1-USD").info["regularMarketPrice"]
 
 def txlookup(num):
     txnum = 0
@@ -59,10 +61,11 @@ def txlookup(num):
             + " SOL\nEnding Balance: " + str(balance_after/1000000000) \
             + " SOL\nCost: " + str(balance_difference/1000000000) \
             + " SOL\nMint: " + mint \
+            + "\nCost (USD): " + str(solusd * (balance_difference/1000000000)) \
             + "\nNFT: " + nft_details["name"] \
             + "\nImage: " + nft_details["image"])
 
         if((not txexists(nft_tx)) and (nft_cost > 0.1)):
-            addtx(nft_tx, timestamp, nft_name, nft_exturl, nft_collection, nft_description, nft_imageurl, nft_cost)
+            addtx(nft_tx, timestamp, nft_name, nft_exturl, nft_collection, nft_description, nft_imageurl, nft_cost, solusd)
 
-txlookup(0)
+txlookup(20)

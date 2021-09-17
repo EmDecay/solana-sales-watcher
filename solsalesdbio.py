@@ -12,16 +12,16 @@ def dbinit():
         # Initialize database
         dbconn = sqlite3.connect(db)
         dbc = dbconn.cursor()
-        dbc.execute("CREATE TABLE tx(name TEXT, exturl TEXT, collection TEXT, description TEXT, imageurl TEXT, cost FLOAT, txid TEXT, timestamp INTEGER, uid INTEGER PRIMARY KEY AUTOINCREMENT)")
+        dbc.execute("CREATE TABLE tx(txid TEXT, timestamp INTEGER, name TEXT, exturl TEXT, collection TEXT, description TEXT, imageurl TEXT, cost FLOAT, solusd FLOAT, uid INTEGER PRIMARY KEY AUTOINCREMENT)")
         dbconn.commit()
         dbconn.close()
 
-def addtx(txid, timestamp, name, exturl, collection, description, imgurl, cost):
+def addtx(txid, timestamp, name, exturl, collection, description, imgurl, cost, solusd):
     # INSERT INTO tx VALUES("txid", "name", "http://ext.url", "description", "http://image.url", 3.14159, NULL)
     dbconn = sqlite3.connect(db)
     dbc = dbconn.cursor()
-    dbc.execute("INSERT INTO tx(txid, timestamp, name, exturl, collection, description, imageurl, cost) \
-        VALUES ('" + txid + "', '" + str(timestamp) + "', '" + name + "', '" + exturl + "', '" + collection + "', '" + description + "', '" + imgurl + "', " + str(cost) + ")")
+    dbc.execute("INSERT INTO tx(txid, timestamp, name, exturl, collection, description, imageurl, cost, solusd) \
+        VALUES ('" + txid + "', '" + str(timestamp) + "', '" + name + "', '" + exturl + "', '" + collection + "', '" + description + "', '" + imgurl + "', " + str(cost) + ", " + str(solusd) + ")")
     dbconn.commit()
     dbconn.close()
     return
