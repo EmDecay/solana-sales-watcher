@@ -1,4 +1,4 @@
-# dbinit.py - Initialize the database connectivity for solSalesWatch
+# solsalesdbio.py - Initialize the database connectivity for solSalesWatch
 # Author - Matt (emdecay (at) protonmail.com)
 
 import os, sqlite3
@@ -25,3 +25,12 @@ def addtx(txid, name, exturl, collection, description, imgurl, cost):
     dbconn.commit()
     dbconn.close()
     return
+
+def txexists(txid):
+    dbconn = sqlite3.connect(db)
+    dbc = dbconn.cursor()
+    txsearch = dbc.execute("SELECT txid FROM tx WHERE txid = '" + txid + "'").fetchone()
+    if txsearch is None:
+        return False
+    else:
+        return True
