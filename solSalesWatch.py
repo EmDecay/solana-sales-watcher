@@ -68,4 +68,4 @@ def txlookup(num):
         if((not txexists(nft_tx)) and (nft_cost > 0.1)):
             addtx(nft_tx, timestamp, nft_name, nft_exturl, nft_collection, nft_description, nft_imageurl, nft_cost, solusd)
 
-txlookup(20)
+txlookup(0)
