@@ -34,7 +34,7 @@ def findmarketplace(data):
 
 def txlookup(num):
     txnum = 0
-    request_sig = {"jsonrpc": "2.0", "id": 1, "method": "getConfirmedSignaturesForAddress2", "params": ["Pigv3gFWLWJL8QwrFBkdZLe1RYzNJTSJPGEUNVimJjh", {"limit": num + 1}]}
+    request_sig = {"jsonrpc": "2.0", "id": 1, "method": "getConfirmedSignaturesForAddress2", "params": ["BVpxLszd8FLUd7N8trW2Ykq47PNHEojMpEu2qqy9KX1S", {"limit": num + 1}]}
 
     while txnum <= num:
         try:
@@ -79,9 +79,9 @@ def txlookup(num):
                 + "\nMarketplace: " + marketplace)
 
             if((not txexists(nft_tx)) and (nft_cost > 0.1)):
-                addtx(nft_tx, timestamp, nft_name, nft_exturl, nft_collection, nft_description, nft_imageurl, nft_cost, solusd)
+                addtx(nft_tx, timestamp, nft_name, nft_exturl, nft_collection, nft_description, nft_imageurl, nft_cost, solusd, marketplace)
         except Exception:
             print("Error")
             break
 
-txlookup(25)
+txlookup(250)
