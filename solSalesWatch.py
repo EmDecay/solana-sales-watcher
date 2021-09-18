@@ -20,16 +20,21 @@ program_id = PublicKey("metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt518x1s")
 
 solusd = yfinance.Ticker("SOL1-USD").info["regularMarketPrice"]
 
+def findmarketplace(data):
+    marketplace = "UNKN"
+
+    for record in data["transaction"]["message"]["accountKeys"]:
+        if record == "3iYf9hHQPciwgJ1TCjpRUp1A3QW4AfaK7J6vCmETRMuu":
+            marketplace = "DEYE"
+        elif record == "2NZukH2TXpcuZP4htiuT8CFxcaQSWzkkR6kepSWnZ24Q":
+            marketplace = "MEDN"
+        elif record == "E6dkaYhqbZN3a1pDrdbajJ9D8xA66LBBcjWi6dDNAuJH":
+            marketplace = "SART"
+    return marketplace
+
 def txlookup(num):
     txnum = 0
-    # Pig
-    request_sig = {"jsonrpc": "2.0", "id": 1, "method": "getConfirmedSignaturesForAddress2", "params": ["Pigv3gFWLWJL8QwrFBkdZLe1RYzNJTSJPGEUNVimJjh"]}
-
-    # Panda Street
-    # request_sig = {"jsonrpc": "2.0", "id": 1, "method": "getConfirmedSignaturesForAddress2", "params": ["J6JPuP91cRdPEWYWN1isvctDGXBEuV7azq1BZAb2dsJX"]}
-
-    # TBT
-    # request_sig = {"jsonrpc": "2.0", "id": 1, "method": "getConfirmedSignaturesForAddress2", "params": ["BVpxLszd8FLUd7N8trW2Ykq47PNHEojMpEu2qqy9KX1S"]}
+    request_sig = {"jsonrpc": "2.0", "id": 1, "method": "getConfirmedSignaturesForAddress2", "params": ["Pigv3gFWLWJL8QwrFBkdZLe1RYzNJTSJPGEUNVimJjh", {"limit": num + 1}]}
 
     while txnum <= num:
         try:
@@ -60,6 +65,7 @@ def txlookup(num):
             nft_description = nft_details["description"]
             nft_cost = balance_difference/1000000000
             nft_tx = sig
+            marketplace = findmarketplace(response_price_full)
 
             print("Signature: " + sig \
                 + "\nCollection: " + nft_collection \
@@ -69,14 +75,13 @@ def txlookup(num):
                 + " SOL\nMint: " + mint \
                 + "\nCost (USD): " + str(solusd * (balance_difference/1000000000)) \
                 + "\nNFT: " + nft_details["name"] \
-                + "\nImage: " + nft_details["image"])
+                + "\nImage: " + nft_details["image"] \
+                + "\nMarketplace: " + marketplace)
 
             if((not txexists(nft_tx)) and (nft_cost > 0.1)):
                 addtx(nft_tx, timestamp, nft_name, nft_exturl, nft_collection, nft_description, nft_imageurl, nft_cost, solusd)
         except Exception:
-            continue
+            print("Error")
+            break
 
-def findmarketplace(sig):
-    print(sig)
-
-txlookup(0)
+txlookup(25)
