@@ -14,6 +14,7 @@ from metaplex_decoder import *
 from solsalesdbio import *
 
 # Global variables used throughout the code
+numlookups = 0
 sol_client = Client("https://explorer-api.mainnet-beta.solana.com")
 program_id = PublicKey("metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt518x1s")
 solusd = yfinance.Ticker("SOL1-USD").info["regularMarketPrice"]
@@ -132,4 +133,4 @@ def txlookup():
 if __name__ == "__main__":
     if debug:
         print("In __main__")
-    _txlookup(0)
+    _txlookup(numlookups)
