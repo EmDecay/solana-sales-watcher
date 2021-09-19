@@ -3,6 +3,7 @@
 
 import os, sqlite3
 
+# Database parameters
 db = "solsaleswatch.db"
 
 # If database doesn't yet exist, initialize it with the table structure
@@ -30,6 +31,7 @@ def txexists(txid):
     dbconn = sqlite3.connect(db)
     dbc = dbconn.cursor()
     txsearch = dbc.execute("SELECT txid FROM tx WHERE txid = '" + txid + "'").fetchone()
+    dbconn.close()
     if txsearch is None:
         return False
     else:
