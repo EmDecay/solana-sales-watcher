@@ -15,12 +15,18 @@ from solsalesdbio import *
 
 # Global variables used throughout the code
 numlookups = 999
-auth_address = "BVpxLszd8FLUd7N8trW2Ykq47PNHEojMpEu2qqy9KX1S"
+auth_address = "Pigv3gFWLWJL8QwrFBkdZLe1RYzNJTSJPGEUNVimJjh"
 sol_client = Client("https://explorer-api.mainnet-beta.solana.com")
 program_id = PublicKey("metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt518x1s")
 solusd = yfinance.Ticker("SOL1-USD").info["regularMarketPrice"]
 debug = True
 verbose = True
+
+# Queue and threading variables
+botQueue = queue.Queue(0)
+botQueueLock = threading.Lock()
+botThreads = []
+maxThreads = 7
 
 # Global lookups used throughout the code
 request_sig = {"jsonrpc": "2.0", "id": 1, "method": "getConfirmedSignaturesForAddress2", "params": [auth_address]}
@@ -40,11 +46,6 @@ def findmarketplace(data):
     return marketplace
 
 # Queue and threading setup
-botQueue = queue.Queue(0)
-botQueueLock = threading.Lock()
-botThreads = []
-maxThreads = 5
-
 class solThread(threading.Thread):
     def __init__(self):
         threading.Thread.__init__(self)
@@ -111,6 +112,8 @@ def txlookup():
                 nft_tx = sig
                 marketplace = findmarketplace(response_price_full)
 
+                if debug:
+                    print("TXNUM: " + str(txnum))
                 if verbose:
                     print("Signature: " + sig \
                         + "\nCollection: " + nft_collection \
@@ -126,12 +129,13 @@ def txlookup():
                 if((not txexists(nft_tx)) and (nft_cost > 0.1)):
                     addtx(nft_tx, timestamp, nft_name, nft_exturl, nft_collection, nft_description, nft_imageurl, nft_cost, solusd, marketplace)
             except Exception:
-                print("Error")
+                print("Error - " + str(txnum))
                 continue
         else:
             botQueueLock.release()
 
 if __name__ == "__main__":
+    dbinit()
     if debug:
         print("In __main__")
     _txlookup(numlookups)
