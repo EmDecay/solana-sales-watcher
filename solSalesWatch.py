@@ -15,12 +15,13 @@ from metaplex_decoder import *
 from solsalesdbio import *
 
 # Global variables used throughout the code
-numlookups = 1
+numlookups = 100
 auth_address = "7gbxCxJkWcop1FCoaHnB6JJaRjpnkMxJFNbqtTS8KJbD"
 sol_client = Client("https://explorer-api.mainnet-beta.solana.com")
 program_id = PublicKey("metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt518x1s")
 solusd = yfinance.Ticker("SOL1-USD").info["regularMarketPrice"]
-debug = True
+debug = False
+showall = False
 verbose = True
 
 # Queue and threading variables
@@ -125,22 +126,23 @@ def txlookup():
                 if debug:
                     print("TXNUM: " + str(txnum))
                 if verbose:
-                    print("Signature: " + sig \
-                        + "\nCollection: " + nft_collection \
-                        + "\nStarting Balance: " + str(balance_before/1000000000) \
-                        + " SOL\nEnding Balance: " + str(balance_after/1000000000) \
-                        + " SOL\nCost: " + str(balance_difference/1000000000) \
-                        + " SOL\nMint: " + mint \
-                        + "\nCost (USD): " + str(solusd * (balance_difference/1000000000)) \
-                        + "\nNFT: " + nft_details["name"] \
-                        + "\nImage: " + nft_details["image"] \
-                        + "\nMarketplace: " + marketplace)
+                    if((nft_cost > 0.1) or showall):
+                        print("Signature: " + sig \
+                            + "\nCollection: " + nft_collection \
+                            + "\nStarting Balance: " + str(balance_before/1000000000) \
+                            + " SOL\nEnding Balance: " + str(balance_after/1000000000) \
+                            + " SOL\nCost: " + str(balance_difference/1000000000) \
+                            + " SOL\nMint: " + mint \
+                            + "\nCost (USD): " + str(solusd * (balance_difference/1000000000)) \
+                            + "\nNFT: " + nft_details["name"] \
+                            + "\nImage: " + nft_details["image"] \
+                            + "\nMarketplace: " + marketplace)
 
                 if((not txexists(nft_tx)) and (nft_cost > 0.1)):
                     addtx(nft_tx, timestamp, nft_name, nft_exturl, nft_collection, nft_description, nft_imageurl, nft_cost, solusd, marketplace)
             except Exception:
                 print("Error - " + str(txnum))
-                continue
+                break
         else:
             botQueueLock.release()
 
