@@ -34,7 +34,7 @@ def findmarketplace(data):
 
 
 # Pig
-request_sig = {"jsonrpc": "2.0", "id": 1, "method": "getConfirmedSignaturesForAddress2", "params": ["Pigv3gFWLWJL8QwrFBkdZLe1RYzNJTSJPGEUNVimJjh"]}
+request_sig = {"jsonrpc": "2.0", "id": 1, "method": "getConfirmedSignaturesForAddress2", "params": ["7gbxCxJkWcop1FCoaHnB6JJaRjpnkMxJFNbqtTS8KJbD"]}
 
 # Panda Street
 # request_sig = {"jsonrpc": "2.0", "id": 1, "method": "getConfirmedSignaturesForAddress2", "params": ["J6JPuP91cRdPEWYWN1isvctDGXBEuV7azq1BZAb2dsJX"]}

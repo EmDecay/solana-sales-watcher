@@ -4,6 +4,7 @@
 # Pig Update Authority Address - Pigv3gFWLWJL8QwrFBkdZLe1RYzNJTSJPGEUNVimJjh
 # TBT Update Authority Address - BVpxLszd8FLUd7N8trW2Ykq47PNHEojMpEu2qqy9KX1S
 # Panda Street Update Authority Address - J6JPuP91cRdPEWYWN1isvctDGXBEuV7azq1BZAb2dsJX
+# Crypto Cavemen Club - 7gbxCxJkWcop1FCoaHnB6JJaRjpnkMxJFNbqtTS8KJbD
 
 # Mainnet Beta RPC Endpoints:  https://api.mainnet-beta.solana.com || https://explorer-api.mainnet-beta.solana.com
 
@@ -14,8 +15,8 @@ from metaplex_decoder import *
 from solsalesdbio import *
 
 # Global variables used throughout the code
-numlookups = 999
-auth_address = "Pigv3gFWLWJL8QwrFBkdZLe1RYzNJTSJPGEUNVimJjh"
+numlookups = 1
+auth_address = "7gbxCxJkWcop1FCoaHnB6JJaRjpnkMxJFNbqtTS8KJbD"
 sol_client = Client("https://explorer-api.mainnet-beta.solana.com")
 program_id = PublicKey("metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt518x1s")
 solusd = yfinance.Ticker("SOL1-USD").info["regularMarketPrice"]
@@ -105,9 +106,18 @@ def txlookup():
 
                 nft_collection = json.loads(metadata)["symbol"]
                 nft_name = nft_details["name"]
-                nft_imageurl = nft_details["image"]
-                nft_exturl = nft_details["external_url"]
-                nft_description = nft_details["description"]
+                try:
+                    nft_imageurl = nft_details["image"]
+                except Exception:
+                    nft_imageurl = ""
+                try:
+                    nft_exturl = nft_details["external_url"]
+                except Exception:
+                    nft_exturl = ""
+                try:
+                    nft_description = nft_details["description"]
+                except Exception:
+                    nft_description = ""
                 nft_cost = balance_difference/1000000000
                 nft_tx = sig
                 marketplace = findmarketplace(response_price_full)
