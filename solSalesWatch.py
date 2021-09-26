@@ -45,6 +45,8 @@ def findmarketplace(data):
             marketplace = "MEDN"
         elif record == "E6dkaYhqbZN3a1pDrdbajJ9D8xA66LBBcjWi6dDNAuJH":
             marketplace = "SART"
+        elif record == "9BVu8rNwzBRv1uz35D2ZPzbXXKtejEKFBitL8m1ykBan":
+            marketplace = "PIGG"
     return marketplace
 
 # Queue and threading setup
