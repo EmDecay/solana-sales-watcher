@@ -144,7 +144,6 @@ def txlookup():
                     addtx(nft_tx, timestamp, nft_name, nft_exturl, nft_collection, nft_description, nft_imageurl, nft_cost, solusd, marketplace)
             except Exception:
                 print("Error - " + str(txnum))
-                break
         else:
             botQueueLock.release()
 
