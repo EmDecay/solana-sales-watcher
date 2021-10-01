@@ -8,11 +8,10 @@
 
 # Mainnet Beta RPC Endpoints:  https://api.mainnet-beta.solana.com || https://explorer-api.mainnet-beta.solana.com
 
-import requests, json, base64, base58, yfinance, sqlite3, threading, queue
+import requests, json, base64, base58, yfinance, sqlite3, threading, queue, sys, os
 from solana.publickey import PublicKey
 from solana.rpc.api import Client
 from metaplex_decoder import *
-from solsalesdbio import *
 
 # Global variables used throughout the code
 numlookups = 100
@@ -138,7 +137,8 @@ def txlookup():
                             + "\nCost (USD): " + str(solusd * (balance_difference/1000000000)) \
                             + "\nNFT: " + nft_details["name"] \
                             + "\nImage: " + nft_details["image"] \
-                            + "\nMarketplace: " + marketplace)
+                            + "\nMarketplace: " + marketplace \
+                            + "\nTimestamp: " + str(timestamp))
 
                 if((not txexists(nft_tx)) and (nft_cost > 0.1)):
                     addtx(nft_tx, timestamp, nft_name, nft_exturl, nft_collection, nft_description, nft_imageurl, nft_cost, solusd, marketplace)
@@ -148,6 +148,8 @@ def txlookup():
             botQueueLock.release()
 
 if __name__ == "__main__":
+    sys.path.append(os.path.dirname(sys.path[0]) + "/shared")
+    from solsalesdbio import *
     dbinit()
     if debug:
         print("In __main__")

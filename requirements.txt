@@ -1,2 +1,4 @@
 requests
 yfinance
+solana
+tweepy

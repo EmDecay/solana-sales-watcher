@@ -1,10 +1,10 @@
 # solsalesdbio.py - Initialize the database connectivity for solSalesWatch
 # Author - Matt (emdecay (at) protonmail.com)
 
-import os, sqlite3
+import os, sqlite3, os, sys
 
 # Database parameters
-db = "solsaleswatch.db"
+db = os.path.dirname(sys.path[0]) + "/shared/solsaleswatch.db"
 
 # If database doesn't yet exist, initialize it with the table structure
 def dbinit():
