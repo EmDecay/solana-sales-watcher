@@ -2,3 +2,4 @@ requests
 yfinance
 solana
 tweepy
+schedule

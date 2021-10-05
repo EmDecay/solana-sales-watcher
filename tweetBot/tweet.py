@@ -1,17 +1,5 @@
-import os, sqlite3
-import schedule, time
-import tweepy
-import requests 
-import random
+import os, sqlite3, schedule, time, tweepy, requests, random, secrets, sys
 # import dotENV
-
-# THESE SHOULD BE MOVED TO ENV OR SOMETHING
-twitter_keys = {
-    'consumer_key':        '',
-    'consumer_secret':     '',
-    'access_token_key':    '',
-    'access_token_secret': ''
-}
 
 # call to actions - WC
 cta = [
@@ -29,24 +17,13 @@ cta = [
 ]   
 
 def job():
-    print("-----------Job started-----------")
-    db = "solsaleswatch.db"
-    dbconn = sqlite3.connect(db)
-    print ("DB connected")
-    dbc = dbconn.cursor()
+    #Setup access to Twitter API via Tweepy
+    #auth = tweepy.OAuthHandler(secrets.CONSUMER_API_KEY, secrets.CONSUMER_API_SK)
+    #auth.set_access_token(secrets.ACCESS_TOKEN, secrets.ACCESS_TOKEN_SK)
+    #api = tweepy.API(auth)
 
-    print ("Logging into twitter")
-    #Setup access to API
-    auth = tweepy.OAuthHandler(twitter_keys['consumer_key'], twitter_keys['consumer_secret'])
-    auth.set_access_token(twitter_keys['access_token_key'], twitter_keys['access_token_secret'])
-
-    api = tweepy.API(auth)
-    print("If no error - we're good, lets roll")
-    # print(api.verify_credentials())
-
-
-    for row in dbc.execute('SELECT * FROM tx WHERE tweeted="no" LIMIT 1'):
-        print(f"tweeting about {row[11]}")
+    for row in untweeted():
+        print(f"tweeting about {row[2]}")
         # twitter code goes here
         
         filename = 'temp.jpg'
@@ -59,8 +36,9 @@ def job():
 
             # Consider moving all of this out of the download image block
             # Should tweets without images go out?
-            image = api.media_upload(filename)
-            nft_name = " ".join(row[2].split("_")) # this is for wool cap ONLY
+            #image = api.media_upload(filename)
+            #nft_name = " ".join(row[2].split("_")) # this is for wool cap ONLY
+            nft_name = row[2]
             # nft_name = row[2] # THIS SHOULD WORK FOR EVERYONE ELSE THAT DOESNT NEED STRING SPLIT
             nft_sol = round(row[7],2)
             nft_usd = round(row[9],2)
@@ -81,7 +59,7 @@ def job():
             # Post the tweet
             print("Tweeting now!")
             print(status)
-            api.update_status(status=status,media_ids=[image.media_id_string])
+            #api.update_status(status=status,media_ids=[image.media_id_string])
             os.remove(filename)
         else:
             print("Unable to download image")
@@ -89,19 +67,18 @@ def job():
         # print(f"deleting id: {row[11]}")
         # dbc.execute("DELETE FROM tx WHERE uid='" + str(row[11]) + "'" )
         # DONT DELETE ROWS - FLIP THE DAMN FLAG - UNTESTED
-        print(f"Updating row uid {nft_db_uid}")
-        dbc.execute(f"UPDATE tx SET tweeted='yes' WHERE uid={nft_db_uid}") 
+        #print(f"Updating row uid {nft_db_uid}")
+        #dbc.execute(f"UPDATE tx SET tweeted='yes' WHERE uid={nft_db_uid}") 
 
-        print("committing to db")
-        dbconn.commit()
+        #print("committing to db")
+        #dbconn.commit()
 
-    print ("closing db")
-    dbconn.close()
-
-    print("-----------DONE-----------")
-    
+    #print ("closing db")
+    #dbconn.close()
 
 if __name__ == "__main__":
+    sys.path.append(os.path.dirname(sys.path[0]) + "/shared")
+    from solsalesdbio import *
     schedule.every(15).seconds.do(job)
     while True:
         schedule.run_pending()

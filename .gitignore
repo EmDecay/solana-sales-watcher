@@ -108,3 +108,4 @@ ENV/
 *.csv
 .DS_Store
 *.db
+secrets.py

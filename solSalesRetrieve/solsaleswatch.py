@@ -14,8 +14,8 @@ from solana.rpc.api import Client
 from metaplex_decoder import *
 
 # Global variables used throughout the code
-numlookups = 100
-auth_address = "7gbxCxJkWcop1FCoaHnB6JJaRjpnkMxJFNbqtTS8KJbD"
+numlookups = 999
+auth_address = "Pigv3gFWLWJL8QwrFBkdZLe1RYzNJTSJPGEUNVimJjh"
 sol_client = Client("https://explorer-api.mainnet-beta.solana.com")
 program_id = PublicKey("metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt518x1s")
 solusd = yfinance.Ticker("SOL1-USD").info["regularMarketPrice"]
