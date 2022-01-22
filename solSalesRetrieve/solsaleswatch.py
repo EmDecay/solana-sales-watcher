@@ -1,13 +1,6 @@
 # solsaleswatch.py - The brains behind the code
 # Author - Matt (emdecay (at) protonmail.com)
 
-# Pig Update Authority Address - Pigv3gFWLWJL8QwrFBkdZLe1RYzNJTSJPGEUNVimJjh
-# TBT Update Authority Address - BVpxLszd8FLUd7N8trW2Ykq47PNHEojMpEu2qqy9KX1S
-# Panda Street Update Authority Address - J6JPuP91cRdPEWYWN1isvctDGXBEuV7azq1BZAb2dsJX
-# Crypto Cavemen Club - 7gbxCxJkWcop1FCoaHnB6JJaRjpnkMxJFNbqtTS8KJbD
-
-# Mainnet Beta RPC Endpoints:  https://api.mainnet-beta.solana.com || https://explorer-api.mainnet-beta.solana.com
-
 import requests, json, base64, base58, yfinance, sqlite3, threading, queue, sys, os
 from solana.publickey import PublicKey
 from solana.rpc.api import Client
@@ -16,9 +9,10 @@ from metaplex_decoder import *
 # Global variables used throughout the code
 numlookups = 999
 auth_address = "Pigv3gFWLWJL8QwrFBkdZLe1RYzNJTSJPGEUNVimJjh"
-sol_client = Client("https://explorer-api.mainnet-beta.solana.com")
+api_endpoint = "https://ssc-dao.genesysgo.net"
+sol_client = Client(api_endpoint)
 program_id = PublicKey("metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt518x1s")
-solusd = yfinance.Ticker("SOL1-USD").info["regularMarketPrice"]
+solusd = yfinance.Ticker("SOL-USD").info["regularMarketPrice"]
 debug = False
 showall = False
 verbose = True
@@ -31,7 +25,7 @@ maxThreads = 7
 
 # Global lookups used throughout the code
 request_sig = {"jsonrpc": "2.0", "id": 1, "method": "getConfirmedSignaturesForAddress2", "params": [auth_address]}
-response_sig = requests.post("https://explorer-api.mainnet-beta.solana.com", json=request_sig, timeout=10)
+response_sig = requests.post(api_endpoint, json=request_sig, timeout=10)
 
 # findmarketplace(data)->marketplace - Determine and return the marketplace that a given transaction took place in
 def findmarketplace(data):
@@ -44,8 +38,10 @@ def findmarketplace(data):
             marketplace = "MEDN"
         elif record == "E6dkaYhqbZN3a1pDrdbajJ9D8xA66LBBcjWi6dDNAuJH":
             marketplace = "SART"
+        elif record == "39fEpihLATXPJCQuSiXLUSiCbGchGYjeL39eyXh3KbyT":
+            marketplace = "SART"
         elif record == "9BVu8rNwzBRv1uz35D2ZPzbXXKtejEKFBitL8m1ykBan":
-            marketplace = "PIGG"
+            marketplace = "AART"
     return marketplace
 
 # Queue and threading setup
@@ -91,7 +87,7 @@ def txlookup():
                 sig = json.loads(response_sig.text)["result"][txnum]["signature"]
 
                 request_price = {"jsonrpc": "2.0", "id": 1, "method": "getConfirmedTransaction", "params": [sig]}
-                response_price_full = json.loads(requests.post("https://explorer-api.mainnet-beta.solana.com", json=request_price, timeout=10).text)["result"]
+                response_price_full = json.loads(requests.post(api_endpoint, json=request_price, timeout=10).text)["result"]
                 response_price = response_price_full["meta"]
                 balance_before = response_price["preBalances"][0]
                 balance_after = response_price["postBalances"][0]
