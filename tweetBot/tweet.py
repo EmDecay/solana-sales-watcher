@@ -1,19 +1,10 @@
 import os, sqlite3, schedule, time, tweepy, requests, random, secrets, sys
-# import dotENV
 
-# call to actions - WC
+# call to actions
 cta = [
-    "Another one has joined the herd! BAHHHHHHH! 🐑",
-    "🐑🐑🐑🐑🐑🐑🐑🐑🐑🐑🐑🐑🐑🐑",
+    "Welcome to the crew!",
     "GOOD BUY! - Read the road map yet?",
-    "OoOoOoOoo! This sheep is ready to get sheared!",
-    "1 🐑 2 🐑 3 🐑 😴 gn",
-    "🌞",
-    "wagmi frens!",
-    "Ready for tomfoolery!",
-    "Have you heard about our billboard in times sq yet?",
-    "The herd needs you!",
-    "BAHHHHHHHHHHHHHH 🐑🐑🐑",
+    "Have you heard about our billboard in Times Square yet?",
 ]   
 
 def job():
@@ -37,9 +28,7 @@ def job():
             # Consider moving all of this out of the download image block
             # Should tweets without images go out?
             #image = api.media_upload(filename)
-            #nft_name = " ".join(row[2].split("_")) # this is for wool cap ONLY
             nft_name = row[2]
-            # nft_name = row[2] # THIS SHOULD WORK FOR EVERYONE ELSE THAT DOESNT NEED STRING SPLIT
             nft_sol = round(row[7],2)
             nft_usd = round(row[9],2)
             nft_marketplace = row[8]
