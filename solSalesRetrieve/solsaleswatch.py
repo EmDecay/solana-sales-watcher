@@ -7,7 +7,7 @@ from solana.rpc.api import Client
 from metaplex_decoder import *
 
 # Global variables used throughout the code
-numlookups = 999
+numlookups = 50
 auth_address = "Pigv3gFWLWJL8QwrFBkdZLe1RYzNJTSJPGEUNVimJjh"
 api_endpoint = "https://ssc-dao.genesysgo.net"
 sol_client = Client(api_endpoint)
@@ -35,6 +35,8 @@ def findmarketplace(data):
         if record == "3iYf9hHQPciwgJ1TCjpRUp1A3QW4AfaK7J6vCmETRMuu":
             marketplace = "DEYE"
         elif record == "2NZukH2TXpcuZP4htiuT8CFxcaQSWzkkR6kepSWnZ24Q":
+            marketplace = "MEDN"
+        elif record == "rFqFJ9g7TGBD8Ed7TPDnvGKZ5pWLPDyxLcvcH2eRCtt":
             marketplace = "MEDN"
         elif record == "E6dkaYhqbZN3a1pDrdbajJ9D8xA66LBBcjWi6dDNAuJH":
             marketplace = "SART"
