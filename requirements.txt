@@ -3,3 +3,4 @@ yfinance
 solana
 tweepy
 schedule
+argparse

@@ -1,30 +1,41 @@
 # solsaleswatch.py - The brains behind the code
 # Author - Matt (emdecay (at) protonmail.com)
 
-import requests, json, base64, base58, yfinance, sqlite3, threading, queue, sys, os
+import requests, json, base64, base58, yfinance, sqlite3, threading, queue, sys, os, argparse
 from solana.publickey import PublicKey
 from solana.rpc.api import Client
 from metaplex_decoder import *
 
+# Argument parsing
+_args = argparse.ArgumentParser()
+_args.add_argument("--numlookups", required=False, default="25", help="Number of lookups to perform (default: %(default)s)")
+_args.add_argument("--cmid", required=False, default="Pigv3gFWLWJL8QwrFBkdZLe1RYzNJTSJPGEUNVimJjh", help="CMID for the collection (the 0 percent royalty address) (default: %(default)s)")
+_args.add_argument("--rpc", required=False, default="https://ssc-dao.genesysgo.net", help="The RPC API endpoint to use (default: %(default)s)")
+_args.add_argument("--maxthreads", required=False, default="1", help="The number of threads to use (more = faster, but could hit RPC API RPS limits) (default: %(default)s)")
+_args.add_argument("--debug", required=False, default=False, help="Display debug information during runtime (default: %(default)s)")
+_args.add_argument("--showall", required=False, default=False, help="Show all results, including possible non-sales (default: %(default)s)")
+_args.add_argument("--verbose", required=False, default=True, help="Show verbose results (default: %(default)s)")
+args = _args.parse_args()
+
 # Global variables used throughout the code
-numlookups = 50
-auth_address = "Pigv3gFWLWJL8QwrFBkdZLe1RYzNJTSJPGEUNVimJjh"
-api_endpoint = "https://ssc-dao.genesysgo.net"
+numlookups = int(args.numlookups)
+cmid = args.cmid
+api_endpoint = args.rpc
+debug = eval(str(args.debug))
+showall = eval(str(args.showall))
+verbose = eval(str(args.verbose))
 sol_client = Client(api_endpoint)
 program_id = PublicKey("metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt518x1s")
 solusd = yfinance.Ticker("SOL-USD").info["regularMarketPrice"]
-debug = False
-showall = False
-verbose = True
 
 # Queue and threading variables
 botQueue = queue.Queue(0)
 botQueueLock = threading.Lock()
 botThreads = []
-maxThreads = 7
+maxThreads = int(args.maxthreads)
 
 # Global lookups used throughout the code
-request_sig = {"jsonrpc": "2.0", "id": 1, "method": "getConfirmedSignaturesForAddress2", "params": [auth_address]}
+request_sig = {"jsonrpc": "2.0", "id": 1, "method": "getConfirmedSignaturesForAddress2", "params": [cmid]}
 response_sig = requests.post(api_endpoint, json=request_sig, timeout=10)
 
 # findmarketplace(data)->marketplace - Determine and return the marketplace that a given transaction took place in
