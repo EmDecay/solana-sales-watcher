@@ -36,25 +36,25 @@ maxThreads = int(args.maxthreads)
 
 # Global lookups used throughout the code
 request_sig = {"jsonrpc": "2.0", "id": 1, "method": "getConfirmedSignaturesForAddress2", "params": [cmid]}
-response_sig = requests.post(api_endpoint, json=request_sig, timeout=10)
+response_sig = requests.post(api_endpoint, json=request_sig, timeout=20)
 
 # findmarketplace(data)->marketplace - Determine and return the marketplace that a given transaction took place in
 def findmarketplace(data):
-    marketplace = "UNKN"
+    marketplace = "Unknown Marketplace"
 
     for record in data["transaction"]["message"]["accountKeys"]:
         if record == "3iYf9hHQPciwgJ1TCjpRUp1A3QW4AfaK7J6vCmETRMuu":
-            marketplace = "DEYE"
+            marketplace = "Digital Eyes"
         elif record == "2NZukH2TXpcuZP4htiuT8CFxcaQSWzkkR6kepSWnZ24Q":
-            marketplace = "MEDN"
+            marketplace = "Magic Eden"
         elif record == "rFqFJ9g7TGBD8Ed7TPDnvGKZ5pWLPDyxLcvcH2eRCtt":
-            marketplace = "MEDN"
+            marketplace = "Magic Eden"
         elif record == "E6dkaYhqbZN3a1pDrdbajJ9D8xA66LBBcjWi6dDNAuJH":
-            marketplace = "SART"
+            marketplace = "Solanart"
         elif record == "39fEpihLATXPJCQuSiXLUSiCbGchGYjeL39eyXh3KbyT":
-            marketplace = "SART"
+            marketplace = "Solanart"
         elif record == "9BVu8rNwzBRv1uz35D2ZPzbXXKtejEKFBitL8m1ykBan":
-            marketplace = "AART"
+            marketplace = "Alpha Art"
     return marketplace
 
 # Queue and threading setup
@@ -100,7 +100,7 @@ def txlookup():
                 sig = json.loads(response_sig.text)["result"][txnum]["signature"]
 
                 request_price = {"jsonrpc": "2.0", "id": 1, "method": "getConfirmedTransaction", "params": [sig]}
-                response_price_full = json.loads(requests.post(api_endpoint, json=request_price, timeout=10).text)["result"]
+                response_price_full = json.loads(requests.post(api_endpoint, json=request_price, timeout=20).text)["result"]
                 response_price = response_price_full["meta"]
                 balance_before = response_price["preBalances"][0]
                 balance_after = response_price["postBalances"][0]

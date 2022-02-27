@@ -45,4 +45,9 @@ def untweeted():
     return untweeted_list
 
 def settweeted(uid):
-    print("Placeholder")
+    dbconn = sqlite3.connect(db)
+    dbc = dbconn.cursor()
+    dbc.execute(f"UPDATE tx SET tweeted='yes' WHERE uid='{uid}'")
+    dbconn.commit()
+    dbconn.close()
+    return
