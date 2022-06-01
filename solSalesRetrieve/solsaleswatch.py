@@ -1,7 +1,7 @@
 # solsaleswatch.py - The brains behind the code
 # Author - Matt (emdecay (at) protonmail.com)
 
-import requests, json, base64, base58, yfinance, sqlite3, threading, queue, sys, os, argparse
+import requests, json, base64, base58, yfinance, sqlite3, threading, queue, sys, os, argparse, datetime
 from solana.publickey import PublicKey
 from solana.rpc.api import Client
 from metaplex_decoder import *
@@ -111,11 +111,11 @@ def txlookup():
                 program_address_data = sol_client.get_account_info(program_address)
                 program_data = program_address_data["result"]["value"]["data"][0]
                 metadata = deserialize_metadata(base58.b58encode(base64.b64decode(program_data)).decode("utf-8"))
-                uri = json.loads(metadata)["uri"]
+                uri = json.loads(metadata)["data"]["uri"]
                 nft_details = json.loads(requests.get(uri).text)
                 timestamp = response_price_full["blockTime"]
 
-                nft_collection = json.loads(metadata)["symbol"]
+                nft_collection = json.loads(metadata)["data"]["symbol"]
                 nft_name = nft_details["name"]
                 try:
                     nft_imageurl = nft_details["image"]
@@ -147,12 +147,13 @@ def txlookup():
                             + "\nNFT: " + nft_details["name"] \
                             + "\nImage: " + nft_details["image"] \
                             + "\nMarketplace: " + marketplace \
-                            + "\nTimestamp: " + str(timestamp))
+                            + "\nTimestamp: " + str(timestamp) \
+                            + "\nDate and Time: " + str(datetime.datetime.fromtimestamp(timestamp).strftime('%Y-%m-%d %H:%M:%S')))
 
                 if((not txexists(nft_tx)) and (nft_cost > 0.1)):
                     addtx(nft_tx, timestamp, nft_name, nft_exturl, nft_collection, nft_description, nft_imageurl, nft_cost, solusd, marketplace)
-            except Exception:
-                print("Error - " + str(txnum))
+            except Exception as error:
+                print("Error - " + str(txnum) + " --- " + str(error))
         else:
             botQueueLock.release()
 
