@@ -18,9 +18,9 @@ cta = [
 
 def job():
     #Setup access to Twitter API via Tweepy
-    #auth = tweepy.OAuthHandler(secrets.CONSUMER_API_KEY, secrets.CONSUMER_API_SK)
-    #auth.set_access_token(secrets.ACCESS_TOKEN, secrets.ACCESS_TOKEN_SK)
-    #api = tweepy.API(auth)
+    auth = tweepy.OAuthHandler(secrets.CONSUMER_API_KEY, secrets.CONSUMER_API_SK)
+    auth.set_access_token(secrets.ACCESS_TOKEN, secrets.ACCESS_TOKEN_SK)
+    api = tweepy.API(auth)
 
     for row in untweeted():
         print(f"tweeting about {row[2]}")
@@ -35,7 +35,7 @@ def job():
                     image.write(chunk)
 
             # Field Order:  txid TEXT, timestamp INTEGER, name TEXT, exturl TEXT, collection TEXT, description TEXT, imageurl TEXT, cost FLOAT, marketplace TEXT, solusd FLOAT, tweeted TEXT, uid INTEGER PRIMARY KEY AUTOINCREMENT
-            #image = api.media_upload(filename)
+            image = api.media_upload(filename)
             nft_name = row[2]
             nft_sol = round(row[7],2)
             nft_usd = round((row[9] * nft_sol),2)
@@ -56,7 +56,7 @@ def job():
             # Post the tweet
             print("Tweeting now!")
             print(status)
-            #api.update_status(status=status,media_ids=[image.media_id_string])
+            api.update_status(status=status,media_ids=[image.media_id_string])
             os.remove(filename)
         else:
             print("Unable to download image")

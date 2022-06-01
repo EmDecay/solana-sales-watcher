@@ -136,7 +136,7 @@ def txlookup():
                 if debug:
                     print("TXNUM: " + str(txnum))
                 if verbose:
-                    if((nft_cost > 0.1) or showall):
+                    if((nft_cost > 0.02) or showall):
                         print("Signature: " + sig \
                             + "\nCollection: " + nft_collection \
                             + "\nStarting Balance: " + str(balance_before/1000000000) \
@@ -150,7 +150,7 @@ def txlookup():
                             + "\nTimestamp: " + str(timestamp) \
                             + "\nDate and Time: " + str(datetime.datetime.fromtimestamp(timestamp).strftime('%Y-%m-%d %H:%M:%S')))
 
-                if((not txexists(nft_tx)) and (nft_cost > 0.1)):
+                if((not txexists(nft_tx)) and (nft_cost > 0.02)):
                     addtx(nft_tx, timestamp, nft_name, nft_exturl, nft_collection, nft_description, nft_imageurl, nft_cost, solusd, marketplace)
             except Exception as error:
                 print("Error - " + str(txnum) + " --- " + str(error))
